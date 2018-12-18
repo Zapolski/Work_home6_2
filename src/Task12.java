@@ -30,9 +30,10 @@ public class Task12 {
         maxSum = Integer.MIN_VALUE;
 
         rek(0,0,0);
+        System.out.println("Случайно заданная матрица: ");
         printResult(deskState);
+        System.out.printf("Путь с максимальной суммой (%d): \n",maxSum);
         printResult(maxMoves);
-        System.out.println(maxSum);
     }
 
     private static void rek(int x, int y, int step){

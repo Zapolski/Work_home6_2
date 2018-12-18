@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Task11 {
 
-    public final static int DESK_SIZE = 5;
+    public final static int DESK_SIZE = 6;
     public final static int MAX_MOVES = DESK_SIZE*DESK_SIZE;
 
     public static int[][] deskState = new int[DESK_SIZE][DESK_SIZE];
