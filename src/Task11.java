@@ -1,35 +1,55 @@
+import java.util.Scanner;
+
 public class Task11 {
 
-
     public final static int DESK_SIZE = 5;
-
     public final static int MAX_MOVES = DESK_SIZE*DESK_SIZE;
 
     public static int[][] deskState = new int[DESK_SIZE][DESK_SIZE];
-    public static int curCount;
-
 
     public final static int[][] POSSIBLE_MOVES = {
-        {-1, -2},
-        {-2, -1},
-        {-2,  1},
-        { 1, -2},
-        {-1,  2},
-        { 2, -1},
-        { 1,  2},
-        { 2,  1} };
-
-
+            {-1, -2},
+            {-2, -1},
+            {-2,  1},
+            { 1, -2},
+            {-1,  2},
+            { 2, -1},
+            { 1,  2},
+            { 2,  1} };
 
     public static void main(String[] args) {
-        System.out.println("Введите начальные координаты коня: ");
-        int x = Task02.getIntFormConsloe();
-        int y = Task02.getIntFormConsloe();
+        System.out.printf("Введите начальные координаты коня (1-%d) от левого нижнего угла: \n",DESK_SIZE);
+        Scanner sc = new Scanner(System.in);
 
-        findPath(x,y,1);
-        System.out.println("ok");
+        System.out.print("Введите номер строки: ");
+        int x = Integer.parseInt(sc.nextLine());
+        System.out.print("Введите номер столбца: ");
+        int y = Integer.parseInt(sc.nextLine());
 
+        deskState[x-1][y-1]=1;
+        if (!rek(x-1,y-1,2))
+            System.out.println("Для данной начальной позиции нет вариантов обхода всего поля.");
         printResult();
+    }
+
+    public static boolean rek (int x, int y, int step){
+        for (int i = 0; i < 8; i++)
+        {
+            int x1 = x + POSSIBLE_MOVES[i][0];
+            int y1 = y + POSSIBLE_MOVES[i][1];
+
+            if ((x1 >= 0) && (y1 >= 0) && (x1 < DESK_SIZE) && (y1 < DESK_SIZE) && (deskState[x1][y1] == 0))
+            {
+                deskState[x1][y1] = step;
+                if ((step==MAX_MOVES)||(rek(x1,y1,step+1))){
+                    return true;
+                }
+                else{
+                    deskState[x1][y1]=0;
+                }
+            }
+        }
+        return false;
     }
 
     private static void printResult() {
@@ -39,30 +59,6 @@ public class Task11 {
             }
             System.out.println();
         }
-    }
-
-
-    public static int findPath( int curX, int curY, int curMoveNum )
-    {
-        deskState[curX][curY] = curMoveNum;
-        curCount=curMoveNum;
-        if (curCount > MAX_MOVES) return 1; // проверяем не достигли ли резульатат, т.е. сделать 64 хода
-        // перебираем все возможные ходя для данной клетки
-        for (int i = 0; i < 8; i++) {
-            int next_x = curX + POSSIBLE_MOVES[i][0];
-            int next_y = curY + POSSIBLE_MOVES[i][1];
-
-            if (isMovePossible(next_x, next_y) && (findPath(next_x, next_y, curCount + 1) == 1)) {
-                return 1;
-            }
-        }
-        deskState[curX][curY]=0;
-        curCount--;
-        return 0;
-    }
-
-    public static boolean isMovePossible(int x, int y)
-    {
-        return (x >= 0 && y >= 0 && x < DESK_SIZE && y < DESK_SIZE && deskState[x][y] == 0);
+        System.out.println();
     }
 }
